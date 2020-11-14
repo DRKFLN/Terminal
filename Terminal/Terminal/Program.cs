@@ -8,20 +8,15 @@ namespace Terminal
     {
         static void Main(string[] args)
         {
-            Console.BackgroundColor = ConsoleColor.DarkMagenta;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Clear();
             Console.WriteLine("**************");
             Console.WriteLine("*  Terminal  *");
             Console.WriteLine("**************");
-            string command = " ", path = @"C:\", key;
+            string command = " ", path = @"C:\";
             Console.WriteLine("Введите комманду");
 
             while (command != "exit" || command != "Exit")
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("User> ");
-                Console.ResetColor();
+                Console.Write(path + "> ");;
                 command = Console.ReadLine();
                 if (command == "ls")
                 {
@@ -40,30 +35,50 @@ namespace Terminal
                         Console.WriteLine(s);
                     }
                 }
-                if (command == "cd")
+                if (command == "cd" || command == "cd ")
                 {
                     Console.Write("Укажите путь: ");
-                    string time;
-                    time = Console.ReadLine();
-                    FileInfo fi = new FileInfo(time);
-                    if (fi.Exists)
+                    string way;
+                    way = Console.ReadLine();
+                    if (Directory.Exists(way))
                     {
-                        path = time;
+                        path = way;
+                        if (way == " ")
+                        {
+                            path = @"C:\";
+                            break;
+                        }
                     }
-                    else
+                    if(!Directory.Exists(way))
                     {
                         Console.WriteLine("Системе не удается найти указанный путь.");
                     }
                 }
-                if (command == "clear")
+                if (command == "clear" || command == "cls")
                 {
                     Console.Clear();
+                }
+                if (command == "exit" || command == "Exit")
+                {
+                    Environment.Exit(0);
                 }
                 if (command == "touch")
                 {
                     Console.Write("укажите имя ");
+                    string timeFile;
+                    timeFile = Console.ReadLine();
+                    FileInfo fi = new FileInfo(timeFile);
+                    if (fi.Exists)
+                    {
+                        Console.WriteLine("Данный файл уже существует.");
+                    }
+                    else
+                    {
+
+                    }
+
+
                 }
-                Console.BackgroundColor = ConsoleColor.DarkMagenta;
             }
 
 
