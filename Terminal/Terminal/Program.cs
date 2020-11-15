@@ -18,7 +18,7 @@ namespace Terminal
             {
                 Console.Write(path + "> ");;
                 command = Console.ReadLine();
-                if (command == "ls")
+                if (command == "ls") //просмотр содержимого директории
                 {
                     Console.WriteLine("Содержимое директории: " + path);
                     Console.WriteLine("Подкаталоги:");
@@ -35,7 +35,7 @@ namespace Terminal
                         Console.WriteLine(s);
                     }
                 }
-                if (command == "cd" || command == "cd ")
+                if (command == "cd" || command == "cd ") //переход по директориям
                 {
                     Console.Write("Укажите путь: ");
                     string way;
@@ -43,45 +43,113 @@ namespace Terminal
                     if (Directory.Exists(way))
                     {
                         path = way;
-                        if (way == " ")
-                        {
-                            path = @"C:\";
-                            break;
-                        }
                     }
-                    if(!Directory.Exists(way))
+                    else
                     {
                         Console.WriteLine("Системе не удается найти указанный путь.");
                     }
                 }
-                if (command == "clear" || command == "cls")
+                if (command == "clear" || command == "cls") //очистка экрана
                 {
                     Console.Clear();
                 }
-                if (command == "exit" || command == "Exit")
+                if (command == "exit" || command == "Exit") //выход из терминала
                 {
                     Environment.Exit(0);
                 }
-                if (command == "touch")
+                if (command == "touch" || command == "touch ") //создание файла
                 {
-                    Console.Write("укажите имя ");
+                    Console.Write("укажите имя: ");
                     string timeFile;
                     timeFile = Console.ReadLine();
                     FileInfo fi = new FileInfo(timeFile);
+                    if (!fi.Exists)
+                    {
+                        var fileInf1 = File.Create(@$"{path}\{timeFile}");
+                        Console.WriteLine("Текстовый файл создан.");
+                        fileInf1.Close();
+                    }
+                    else
+                    {          
+                        Console.WriteLine("Данный файл уже существует.");
+                    }
+                }
+                if (command == "rm" || command == "rm ") //удаление файла
+                {
+                    Console.Write("Введите путь к файлу: ");
+                    string timepath;
+                    timepath = Console.ReadLine();
+                    FileInfo fi = new FileInfo(timepath);
                     if (fi.Exists)
                     {
-                        Console.WriteLine("Данный файл уже существует.");
+                        File.Delete(@$"{timepath}");
+                        Console.WriteLine("Файл удален");
                     }
                     else
                     {
-
+                        Console.WriteLine("Файл не найден");
                     }
-
-
+                }
+                if (command == "cp" || command == "cp ") //копирование файла в другой каталог
+                {
+                    Console.Write("Введите путь к файлу: ");
+                    string newpath, oldpath;
+                    oldpath = Console.ReadLine();
+                    FileInfo fi = new FileInfo(oldpath);
+                    if (fi.Exists)
+                    {
+                        Console.Write("Введите место перемещения: ");
+                        newpath = Console.ReadLine();
+                        File.Copy(oldpath, newpath, true);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Такого файла нет");
+                    }
+                }
+                if (command == "openfl" || command == "openfl ") //чтение файла
+                {
+                    Console.Write("Укажите путь до файла: ");
+                    string filepath = Console.ReadLine();
+                    FileInfo fi = new FileInfo(filepath);
+                    if (fi.Exists)
+                    {
+                        Console.Clear();
+                        FileStream file1 = new FileStream(@$"{filepath}", FileMode.Open);
+                        StreamReader reader = new StreamReader(file1);
+                        Console.WriteLine(reader.ReadToEnd());
+                        reader.Close();
+                    }
+                }
+                if (command == "Help" || command == "help")
+                {
+                    Console.WriteLine("ls - просмотр сожержимого директории");
+                    Console.WriteLine("cd - переход по директориям");
+                    Console.WriteLine("clear или cls - очистка экрана терминала");
+                    Console.WriteLine("exit - выход из программы");
+                    Console.WriteLine("touch - создание файла");
+                    Console.WriteLine("rm - удаление файла");
+                    Console.WriteLine("cp - копирование файла в указанную директорию");
+                    Console.WriteLine("openfl - прочтение содержимого  файла");
+                    Console.WriteLine("help - показать эту страницу");
+                    Console.WriteLine("1. Нажмите 1 для очистки терминала");
+                    Console.WriteLine("2. Нажмите 2 для сохранения на экране этой памятки");
+                    int a;
+                    a = Convert.ToInt32(Console.ReadLine());
+                    if (a == 1)
+                    {
+                        Console.Clear();
+                    }
+                    else if (a == 2)
+                    {
+                        //break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("нет такой команды, введите одну из предложенных");
+                    }
                 }
             }
-
-
         }
     }
 }
